@@ -5,43 +5,19 @@ on:
       - main
 
 jobs:
-  build:
+  jobs:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: configure AWS Credentials
-        uses: aws-actions/configure-aws-Credentials@v1
-        with:
-          python-version: '3.10'
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run unit tests
-        run: python -m unittest discover tests
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && needs.build.result == 'success'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Deploy to AWS
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ AKIA3FLDYXQTDEIH26KN.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ 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.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-
-      - name: Deploy application
-        run: |
-          # Command to deploy the application to your chosen cloud service.
-          # This command will depend on your specific application and cloud provider.
+    - name: Deploy static site to S3 bucket
+      run: aws s3 sync . s3://747abhiraj  --delete
