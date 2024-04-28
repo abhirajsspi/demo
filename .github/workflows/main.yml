@@ -1,5 +1,4 @@
-name: CI/CD
-
+name: Python hello world
 on:
   push:
     branches:
@@ -10,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: configure AWS Credentials
+        uses: aws-actions/configure-aws-Credentials@v1
         with:
           python-version: '3.10'
 
@@ -36,10 +35,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to AWS
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ AKIA3FLDYXQTDEIH26KN.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ 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.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
       - name: Deploy application
